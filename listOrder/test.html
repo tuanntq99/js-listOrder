@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task 41.55 - Danh Sách Đơn Hàng</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  <!-- Import Datatable sau jquery -->
+  <!-- Import them style bootstrap cho datatable -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Library Flatpickr -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 mb-3">
+        <h4 class="text-center m-4"><b>DANH SÁCH ĐƠN HÀNG</b></h4>
+        <div class="container jumbotron py-4">
+          <div class="row form-group">
+            <label class="col-sm-2 col-form-label">Trạng thái Order:</label>
+            <div class="col-sm-3">
+              <select id="select-status" class="form-control">
+                <option value="all">All</option>
+                <option value="open">Open</option>
+                <option value="confirm">Confirm</option>
+                <option value="cancel">Cancel</option>
+              </select>
+            </div>
+            <label class="col-sm-2 col-form-label">Loại pizza:</label>
+            <div class="col-sm-3">
+              <select id="select-pizza" class="form-control">
+                <option value="all">All</option>
+                <option value="hawaii">Hawaii</option>
+                <option value="bacon">Bacon</option>
+                <option value="seafood">Seafood</option>
+              </select>
+            </div>
+            <div class="col-sm-2">
+              <button class="btn btn-primary" id="btn-filter">Lọc</button>
+              <button class="btn btn-primary" id="btn-clear">Clear</button>
+            </div>
+          </div>
+        </div>
+        <table id="tbl-order" class="table text-center table-hover table-bordered table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Order ID</th>
+              <th scope="col">Kích cỡ Combo</th>
+              <th scope="col">Loại pizza</th>
+              <th scope="col">Nước uống</th>
+              <th scope="col">Thành tiền</th>
+              <th scope="col">Họ và tên</th>
+              <th scope="col">Số điện thoại</th>
+              <th scope="col">Trạng thái</th>
+              <th scope="col">Chi tiết</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <!-- data -->
+          </tbody>
+        </table>
+        <!-- pageable -->
+        <div class="pageable">
+          <label for="items-per-page">Quantity:</label>
+          <input type="number" id="items-per-page" min="1" style="width: 45px;">
+          <span id="current-page-info"></span>
+        </div>
+        <!-- Pageable -->
+        <!-- Page -->
+        <div class="d-flex justify-content-end ml-auto">
+          <div id="pagination-container">
+              <ul class="pagination">
+                  <li class="page-item" id="prev-page">
+                      <a class="page-link" href="#" aria-label="Previous">
+                          <span aria-hidden="true">&laquo;</span>
+                      </a>
+                  </li>
+                  <li class="page-item" id="next-page">
+                      <a class="page-link" href="#" aria-label="Next">
+                          <span aria-hidden="true">&raquo;</span>
+                      </a>
+                  </li>
+              </ul>
+          </div>
+      </div>
+        <!-- Page -->
+      </div>
+    </div>
+  </div>
+  <!-- Modal edit mới khóa học -->
+  <div>
+    <div id="detail-course-modal" class="modal fade">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="h5-modal-title">Order Detail!!!</h5>
+            <button class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="col-10 mx-auto">
+                <div class="row form-group">
+                  <label class="col-4">Order ID(mã đơn hàng):</label>
+                  <input type="number" class="form-control col-8" id="input-orderCode" placeholder="Order ID" readonly>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Có Combo:</label>
+                  <select name="combo" class="form-control col-8" id="input-combo" placeholder="Combo">
+                    <option value="" disabled selected hidden>Combo</option>
+                    <option>S</option>
+                    <option>M</option>
+                    <option>L</option>
+                  </select>
+                  <div class="error-message" id="error-combo"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Đường kính:</label>
+                  <input type="text" class="form-control col-8" id="input-duong-kinh" placeholder="Đường kính">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Sườn nướng(miếng):</label>
+                  <input type="text" class="form-control col-8" id="input-suon" placeholder="Sườn nướng">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Đồ uống:</label>
+                  <select class="form-control col-8" id="input-drink">
+                    <option value="" disabled selected hidden>Đồ uống</option>
+                    <option>Pepsi</option>
+                    <option>Coca</option>
+                    <option>7Up</option>
+                  </select>
+                  <div class="error-message" id="error-drink"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Số lượng nước uống:</label>
+                  <input type="number" class="form-control col-8" id="input-drink-number"
+                    placeholder="Số lượng nước uống">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Voucher ID:</label>
+                  <input type="number" class="form-control col-8" id="input-voucherid" placeholder="Voucher ID">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Loại pizza:</label>
+                  <select class="form-control col-8" id="input-pizza">
+                    <option value="" disabled selected hidden>Loại pizza</option>
+                    <option>Hawaii</option>
+                    <option>Bacon</option>
+                    <option>Seafood</option>
+                  </select>
+                  <div class="error-message" id="error-pizza"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Salad:</label>
+                  <input type="text" class="form-control col-8" id="input-salad" placeholder="Salad">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Thành tiền:</label>
+                  <input type="number" class="form-control col-8" id="input-tien" placeholder="Thành tiền">
+                  <div class="error-message" id="error-tien"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Giảm giá:</label>
+                  <input type="text" class="form-control col-8" id="input-giam-gia" placeholder="Giảm giá">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Họ và tên:</label>
+                  <input type="text" class="form-control col-8" id="input-ho-ten" placeholder="Họ và tên">
+                  <div class="error-message" id="error-ho-ten"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Email:</label>
+                  <input type="text" class="form-control col-8" id="input-email" placeholder="Email">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Số điện thoại:</label>
+                  <input type="number" class="form-control col-8" id="input-so-dien-thoai" placeholder="Số điện thoại">
+                  <div class="error-message" id="error-so-dien-thoai"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Địa chỉ:</label>
+                  <input type="text" class="form-control col-8" id="input-dia-chi" placeholder="Địa chỉ">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Lời nhắn:</label>
+                  <input type="text" class="form-control col-8" id="input-message" placeholder="Lời nhắn">
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Trạng thái đơn hàng:</label>
+                  <select class="form-control col-8" id="input-trang-thai">
+                    <option value="" disabled selected hidden>Trạng thái đơn hàng</option>
+                    <option>Open</option>
+                    <option>Confirm</option>
+                    <option>Cancel</option>
+                  </select>
+                  <div class="error-message" id="error-trang-thai"></div>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Ngày tạo đơn:</label>
+                  <input type="text" class="form-control col-8" id="input-ngay-tao" placeholder="Ngày tạo" readonly>
+                </div>
+                <div class="row form-group">
+                  <label class="col-4">Ngày cập nhật:</label>
+                  <input type="text" class="form-control col-8" id="input-ngay-cap-nhat" placeholder="Ngày cập nhật" readonly>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-info" id="btn-confirm">Confirm</button>
+            <button class="btn btn-secondary" id="btn-cancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="modal-confirm-erase">
+        <div class="modal-container">
+          <div class="wrap">
+            <div class="modal-text">Are you sure about that ? =.=</div>
+            <div class="btn-erase-container">
+              <button class="btn btn-info" id="btn-confirm-erase">Confirm</button>
+              <button class="btn btn-secondary" id="btn-cancel-erase">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

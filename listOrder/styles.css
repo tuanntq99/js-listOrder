@@ -1,0 +1,174 @@
+/* trigger create new and search */
+.trigger-div {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+
+.create-container {
+    flex: 1;
+}
+
+.search-container {
+    text-align: right;
+    margin-right: 10%;
+}
+
+.btn-create {
+    background-color: #17a2b8 !important;
+}
+
+.trigger-div button {
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 10px;
+    outline-color: DeepSkyBlue;
+}
+
+.search-item {
+    border-radius: 5px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+}
+
+.search-item:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Input table data */
+#detail-course-modal {
+    max-height: 100%;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        margin: 4.5rem auto;
+    }
+}
+
+tbody th {
+    font-weight: normal;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.detail-container {
+    flex: 1;
+    text-align: right;
+    padding-right: 2px;
+}
+
+.erase-container {
+    flex: 0 0 45%;
+    text-align: left;
+    padding-left: 2px;
+}
+
+/* Confirm erase */
+.modal-confirm-erase>* {
+    margin: .25rem;
+    text-align: center;
+}
+
+.modal-confirm-erase {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    /* Đảm bảo modal luôn nằm trên cùng */
+    background: rgba(0, 0, 0, 0.5);
+    /* Màu nền mờ */
+    width: 100%;
+    height: 100%;
+    display: none;
+    /* Ẩn modal ban đầu */
+    justify-content: center;
+    /* Căn giữa theo trục ngang */
+    align-items: center;
+    /* Căn giữa theo trục dọc */
+}
+
+.modal-container {
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+}
+
+.modal-text {
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-erase-container button {
+    margin: 5px;
+}
+
+/* Clear button */
+.col-sm-2 {
+    display: flex;
+}
+
+.btn-primary {
+    width: 50%;
+    margin: 0 5px;
+}
+
+/* Pageable */
+.pageable {
+    text-align: right;
+    margin: 10px 0;
+    padding: 2px;
+}
+
+.pageable input,
+.pageable span,
+.pageable label {
+    margin: 2px;
+}
+
+#items-per-page {
+    border-radius: 5px;
+}
+
+/* page */
+#pagination-container .pagination {
+    text-align: right;
+}
+
+/*  Fix button prev and next (just fun) */
+.button-clicked {
+    border-color: aqua !important;
+    animation: buttonClickEffect 0.3s ease;
+}
+
+@keyframes buttonClickEffect {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Fix error message */
+.error-message{
+    color: red;
+    margin-left:212.77px;
+}
